@@ -37,6 +37,6 @@
             <ComboBox fx:id="categoryComboBox" minHeight="-Infinity" minWidth="140.0" prefHeight="25.0" prefWidth="300.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <Button fx:id="submitButton" layoutX="251.0" layoutY="268.0" mnemonicParsing="false" onAction="#submitUpdateItem" text="Submit" />
+      <Button fx:id="submitButton" layoutX="250.0" layoutY="287.0" mnemonicParsing="false" onAction="#submitUpdateItem" text="Submit" />
    </children>
 </AnchorPane>

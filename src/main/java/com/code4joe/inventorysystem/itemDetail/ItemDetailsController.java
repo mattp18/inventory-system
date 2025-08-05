@@ -16,6 +16,8 @@ public class ItemDetailsController {
 
     private final CategoryService categoryService = new CategoryService();
 
+    private ItemDataService itemDataService;
+
     private int itemId;
 
     @FXML
@@ -39,6 +41,10 @@ public class ItemDetailsController {
 
     @FXML
     private ComboBox<Category> categoryComboBox;
+
+    public void setItemDataService(ItemDataService itemDataService) {
+        this.itemDataService = itemDataService;
+    }
 
     public void initialize() {
         categoryComboBox.setItems(FXCollections.observableArrayList(categoryService.getAllCategories()));
@@ -67,6 +73,8 @@ public class ItemDetailsController {
             itemDTO = new ItemDTO(nameField.getText(), Double.parseDouble(priceField.getText()), checkBox.isSelected());
         }
             itemService.updateItem(itemId, itemDTO);
+
+        itemDataService.refreshItems();
 
         Stage stage = (Stage) submitButton.getScene().getWindow();
         stage.close();

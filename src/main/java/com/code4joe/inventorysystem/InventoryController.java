@@ -22,6 +22,8 @@ public class InventoryController {
 
     private final ItemService itemService = new ItemService();
 
+    private ItemDataService itemDataService;
+
     private final CategoryService categoryService = new CategoryService();
 
     /**
@@ -69,6 +71,10 @@ public class InventoryController {
 
     private ObservableList<Item> itemList;
 
+    public void setItemDataService(ItemDataService itemDataService) {
+        this.itemDataService = itemDataService;
+        postInit();
+    }
 
     @FXML
     public void initialize() {
@@ -88,9 +94,8 @@ public class InventoryController {
             }
         });
 
-        itemList = FXCollections.observableArrayList();
-        itemList.setAll(itemService.getAllItems());
-        tableView.setItems(itemList);
+//        tableView.setItems(itemDataService.getItems());
+//        itemDataService.refreshItems();
 
         /**
          * Pie Chart Impl.
@@ -136,7 +141,7 @@ public class InventoryController {
                     e.printStackTrace();
                 }
             } else if(newTab == homeTab ) {
-                refreshTable();
+                itemDataService.refreshItems();
                 tableView.setVisible(true);
             }
         });
@@ -151,9 +156,9 @@ public class InventoryController {
 
     }
 
-    private void refreshTable() {
-        System.out.println("refresh table");
-        itemList.setAll(itemService.getAllItems());
+    private void postInit() {
+        tableView.setItems(itemDataService.getItems());
+        itemDataService.refreshItems();
     }
 
     private void showItemDetailsWindow(Item item) {
@@ -162,8 +167,9 @@ public class InventoryController {
             Parent root = loader.load();
 
             // Pass the selected item to the controller
-            ItemDetailsController controller = loader.getController();
-            controller.setItem(item);
+            ItemDetailsController detailsController = loader.getController();
+            detailsController.setItemDataService(itemDataService);
+            detailsController.setItem(item);
 
             Stage stage = new Stage();
             stage.setTitle("Item Details");
