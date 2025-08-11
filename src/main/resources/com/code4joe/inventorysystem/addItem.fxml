@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -29,6 +30,7 @@
             <TextField fx:id="itemPriceField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ComboBox fx:id="categoryComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <CheckBox fx:id="checkBox" mnemonicParsing="false" text="sold" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <Button fx:id="submitAddButton" layoutX="236.0" layoutY="255.0" mnemonicParsing="false" onAction="#addItemHandleSubmit" text="Add Item" />

@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,15 +12,13 @@ public class ItemService {
 
     private String sql = "INSERT INTO items (name, date, sold, price, category_id) VALUES (?, ?, ?, ?, ?)";
 
-    String getAllSQL = "SELECT * FROM items";
-
-    String eagerFetchItemsSQL = "SELECT i.id, i.name, i.date, i.sold, i.price, c.id AS category_id, c.name AS category_name\n" +
+    private String eagerFetchItemsSQL = "SELECT i.id, i.name, i.date, i.sold, i.price, c.id AS category_id, c.name AS category_name\n" +
             "FROM items i\n" +
             "LEFT JOIN categories c ON i.category_id = c.id;\n";
 
-    String selectWhereExistsSQL = "SELECT * FROM items WHERE id = ?";
+    private String updateItemSQL = "UPDATE items SET name = ?, sold = ?, price = ?, date = ?, category_id = ? WHERE id = ?";
 
-    String updateItemSQL = "UPDATE items SET name = ?, sold = ?, price = ?, date = ? WHERE id = ?";
+    private String removeItemSQL = "DELETE FROM items WHERE id = ?";
 
     /**
      * Add item to database.
@@ -34,7 +31,7 @@ public class ItemService {
 
             statement.setString(1, item.getName());
             statement.setString(2, LocalDate.now().toString());
-            statement.setBoolean(3, false);
+            statement.setBoolean(3, item.getSold());
             statement.setDouble(4, item.getPrice());
             statement.setInt(5, item.getCategory().getId());
 
@@ -67,7 +64,7 @@ public class ItemService {
                         rs.getString("name"),
                         rs.getString("date"),
                         rs.getBoolean("sold"),
-                        Double.valueOf(rs.getInt("price")),
+                        rs.getDouble("price"),
                         category
                 );
 
@@ -80,18 +77,18 @@ public class ItemService {
         return items;
     }
 
-
-    public void updateItem(int id, ItemDTO itemDTO ) {
+    public void updateItem(int itemId, int categoryId, ItemDTO itemDTO ) {
         try(Connection connection = DatabaseConnector.getConnection();
             PreparedStatement statement = connection.prepareStatement(updateItemSQL);) {
 
-            System.out.println("in Update item checking if id is present " + id);
+            System.out.println("in Update item checking if id is present " + categoryId);
 
             statement.setString(1, itemDTO.getName());
             statement.setBoolean(2, itemDTO.getSold());
             statement.setDouble(3, itemDTO.getPrice());
             statement.setString(4, itemDTO.getDate());
-            statement.setInt(5, id);
+            statement.setInt(5, categoryId);
+            statement.setInt(6, itemId);
 
 
             boolean statementExecutedSuccessfully = statement.execute();
@@ -107,10 +104,13 @@ public class ItemService {
         }
     }
 
-    //Delete item method
-
-    //Add item method
-
-    //update item method
-
+    public void removeItem(int itemId) {
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(removeItemSQL);) {
+            statement.setInt(1, itemId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

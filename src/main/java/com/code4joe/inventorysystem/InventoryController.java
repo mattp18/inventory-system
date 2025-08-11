@@ -4,6 +4,8 @@ import com.code4joe.inventorysystem.itemDetail.ItemDetailsController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -20,11 +22,7 @@ import java.io.IOException;
 
 public class InventoryController {
 
-    private final ItemService itemService = new ItemService();
-
     private ItemDataService itemDataService;
-
-    private final CategoryService categoryService = new CategoryService();
 
     /**
      * All table items
@@ -39,7 +37,7 @@ public class InventoryController {
     private TableColumn<Item, Boolean> soldColumn;
 
     @FXML
-    private TableColumn<Item, String> priceColumn;
+    private TableColumn<Item, Double> priceColumn;
 
     @FXML
     private TableColumn<Item, String> dateColumn;
@@ -63,13 +61,15 @@ public class InventoryController {
 
     @FXML private LineChart<Number, Number> lineChart;
 
+    @FXML
+    private TextField filterTextField;
+
+    private FilteredList<Item> filteredItems;
+    private SortedList<Item> sortedItems;
+
     /**
      *  control and data structure variables.
      */
-
-    private boolean recordClicked = false;
-
-    private ObservableList<Item> itemList;
 
     public void setItemDataService(ItemDataService itemDataService) {
         this.itemDataService = itemDataService;
@@ -79,10 +79,23 @@ public class InventoryController {
     @FXML
     public void initialize() {
         System.out.println("initialize");
+
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         soldColumn.setCellValueFactory(new PropertyValueFactory<>("sold"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        priceColumn.setCellFactory(tc -> new TableCell<Item, Double>() {
+            @Override
+            protected void updateItem(Double price, boolean empty) {
+                super.updateItem(price, empty);
+                if (empty || price == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%.2f", price));
+                }
+            }
+        });
+
 
         // category column - custom mapping
         categoryColumn.setCellValueFactory(cellData -> {
@@ -93,9 +106,6 @@ public class InventoryController {
                 return new SimpleStringProperty("No Category");
             }
         });
-
-//        tableView.setItems(itemDataService.getItems());
-//        itemDataService.refreshItems();
 
         /**
          * Pie Chart Impl.
@@ -153,11 +163,41 @@ public class InventoryController {
                 showItemDetailsWindow(selectedItem);
             }
         });
-
     }
 
     private void postInit() {
-        tableView.setItems(itemDataService.getItems());
+        // 1) wrap the service list in a FilteredList (same backing list)
+        filteredItems = new FilteredList<>(itemDataService.getItems(), p -> true);
+
+        // 2) wrap in a SortedList so TableView sorting works
+        sortedItems = new SortedList<>(filteredItems);
+        sortedItems.comparatorProperty().bind(tableView.comparatorProperty());
+
+        // 3) set the table once
+        tableView.setItems(sortedItems);
+
+        // 4) set up listener (do this after filteredItems exists)
+        filterTextField.textProperty().addListener((obs, oldValue, newValue) -> {
+            final String query = (newValue == null) ? "" : newValue.trim().toLowerCase();
+
+            filteredItems.setPredicate(item -> {
+                if (query.isEmpty()) return true;
+
+                // protect against nulls
+                String name = item.getName() == null ? "" : item.getName().toLowerCase();
+                if (name.contains(query)) return true;
+
+                Category cat = item.getCategory();
+                if (cat != null) {
+                    String catName = cat.getName() == null ? "" : cat.getName().toLowerCase();
+                    if (catName.contains(query)) return true;
+                }
+
+                return false;
+            });
+        });
+
+        // 5) load data into the service (this updates filteredItems automatically)
         itemDataService.refreshItems();
     }
 

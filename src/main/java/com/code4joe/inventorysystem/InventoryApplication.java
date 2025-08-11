@@ -3,6 +3,7 @@ package com.code4joe.inventorysystem;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,7 +21,8 @@ public class InventoryApplication extends Application {
         InventoryController inventoryController = fxmlLoader.getController();
         inventoryController.setItemDataService(itemDataService);
 
-        stage.setTitle("Snagged Inventory System");
+        stage.setTitle("Snagzu Inventory System");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icons/snagzu-logo.jpg")));
         stage.setScene(scene);
         stage.show();
     }

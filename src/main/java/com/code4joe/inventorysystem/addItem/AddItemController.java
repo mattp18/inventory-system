@@ -6,11 +6,8 @@ import com.code4joe.inventorysystem.Item;
 import com.code4joe.inventorysystem.ItemService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
-import java.util.List;
 
 public class AddItemController {
 
@@ -30,8 +27,15 @@ public class AddItemController {
     @FXML
     private ComboBox<Category> categoryComboBox;
 
+    @FXML
+    private CheckBox checkBox;
+
     public void initialize() {
         categoryComboBox.setItems(FXCollections.observableArrayList(categoryService.getAllCategories()));
+
+        if(!categoryComboBox.getItems().isEmpty()) {
+            categoryComboBox.setValue(categoryComboBox.getItems().getFirst());
+        }
     }
 
 
@@ -40,19 +44,33 @@ public class AddItemController {
         System.out.println("addItemHandleSubmit testing");
         //retrieve category object by name
 
+        if(!itemPriceField.getText().matches("\\d*(\\.\\d*)?")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Input Validation Failed");
+            alert.setContentText("Please enter a valid number");
+
+            alert.showAndWait();
+
+            return;
+        }
 
         if(!itemNameField.getText().trim().isEmpty() && !itemPriceField.getText().trim().isEmpty() && !categoryComboBox.getSelectionModel().isEmpty()) {
             Item item = new Item(itemNameField.getText().trim(), Double.parseDouble(itemPriceField.getText().trim()), categoryComboBox.getValue());
+            item.setSold(checkBox.isSelected());
             itemService.addItem(item);
             System.out.println("persisting item to db...");
-        } else {
-            System.out.println("Both fields cannot be empty");
-        }
-    }
 
-    private void populateCategoryComboBox(List<Category> categories) {
-        if(categories != null) {
-            categoryComboBox.getItems().addAll(categories);
+            //clear input fields
+            itemNameField.clear();
+            itemPriceField.clear();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Missing values");
+            alert.setContentText("Name and Price are required");
+
+            alert.showAndWait();
         }
     }
 }

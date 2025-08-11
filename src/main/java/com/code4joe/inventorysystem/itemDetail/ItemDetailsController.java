@@ -4,11 +4,12 @@ import com.code4joe.inventorysystem.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class ItemDetailsController {
 
@@ -42,6 +43,9 @@ public class ItemDetailsController {
     @FXML
     private ComboBox<Category> categoryComboBox;
 
+    @FXML
+    private ImageView iconDeleteItem;
+
     public void setItemDataService(ItemDataService itemDataService) {
         this.itemDataService = itemDataService;
     }
@@ -72,7 +76,7 @@ public class ItemDetailsController {
         } else {
             itemDTO = new ItemDTO(nameField.getText(), Double.parseDouble(priceField.getText()), checkBox.isSelected());
         }
-            itemService.updateItem(itemId, itemDTO);
+            itemService.updateItem(itemId, categoryComboBox.getValue().getId(), itemDTO);
 
         itemDataService.refreshItems();
 
@@ -80,9 +84,22 @@ public class ItemDetailsController {
         stage.close();
     }
 
-    private void populateCategoryComboBox(List<Category> categories) {
-        if(categories != null) {
-            categoryComboBox.getItems().addAll(categories);
+    @FXML
+    private void handleIconClicked(MouseEvent event) {
+        System.out.println("test");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Item");
+        alert.setHeaderText("Are you sure you want to delete this item?");
+        alert.setContentText("This action cannot be undone");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            itemService.removeItem(itemId);
+            itemDataService.refreshItems();
+            Stage stage = (Stage) submitButton.getScene().getWindow();
+            stage.close();
+        } else {
+            System.out.println("User canceled");
         }
     }
 }

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,7 +16,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.code4joe.inventorysystem.itemDetail.ItemDetailsController">
    <children>
-      <GridPane hgap="20.0" layoutX="154.0" layoutY="92.0" prefHeight="134.0" prefWidth="246.0" vgap="40.0">
+      <GridPane hgap="20.0" layoutX="154.0" layoutY="92.0" prefHeight="134.0" prefWidth="246.0" vgap="40.0" AnchorPane.bottomAnchor="148.0" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="92.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -28,15 +31,23 @@
          <children>
             <Label fx:id="nameLabel" text="Name" />
             <Label fx:id="priceLabel" text="Price" GridPane.columnIndex="1" />
-            <TextField fx:id="nameField" minWidth="30.0" prefHeight="25.0" prefWidth="114.0" GridPane.rowIndex="1" />
+            <TextField fx:id="nameField" minWidth="50.0" prefHeight="25.0" prefWidth="114.0" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></TextField>
             <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Date" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <CheckBox fx:id="checkBox" mnemonicParsing="false" text="Sold" GridPane.rowIndex="2" />
-            <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <DatePicker fx:id="datePicker" minWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="Category" GridPane.columnIndex="2" />
             <ComboBox fx:id="categoryComboBox" minHeight="-Infinity" minWidth="140.0" prefHeight="25.0" prefWidth="300.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <Button fx:id="submitButton" layoutX="250.0" layoutY="287.0" mnemonicParsing="false" onAction="#submitUpdateItem" text="Submit" />
+      <ImageView fx:id="iconDeleteItem" fitHeight="25.0" fitWidth="32.0" layoutX="505.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#handleIconClicked">
+         <image>
+            <Image url="@../../../icons/delete_icon_inventory.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
