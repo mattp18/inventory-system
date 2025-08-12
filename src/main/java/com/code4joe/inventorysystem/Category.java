@@ -1,5 +1,8 @@
 package com.code4joe.inventorysystem;
 
+/**
+ * @author Matthew Puentes
+ */
 public class Category {
 
     private int id;

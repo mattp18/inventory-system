@@ -20,6 +20,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * @author Matthew Puentes
+ */
+
 public class InventoryController {
 
     private ItemDataService itemDataService;

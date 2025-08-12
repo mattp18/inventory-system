@@ -8,6 +8,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Matthew Puentes
+ */
+
 public class ItemService {
 
     private String sql = "INSERT INTO items (name, date, sold, price, quantity, category_id) VALUES (?, ?, ?, ?, ?, ?)";

@@ -7,6 +7,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * @author Matthew Puentes
+ */
+
 public class DatabaseInitializer {
     static Logger log = LoggerFactory.getLogger(DatabaseInitializer.class);
 

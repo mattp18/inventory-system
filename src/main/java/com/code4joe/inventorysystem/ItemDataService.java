@@ -3,6 +3,10 @@ package com.code4joe.inventorysystem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * @author Matthew Puentes
+ */
+
 public class ItemDataService {
 
     private final ItemService itemService = new ItemService();

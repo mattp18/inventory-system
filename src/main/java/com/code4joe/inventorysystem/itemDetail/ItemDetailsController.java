@@ -12,6 +12,10 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * @author Matthew Puentes
+ */
+
 public class ItemDetailsController {
 
     private final ItemService itemService = new ItemService();

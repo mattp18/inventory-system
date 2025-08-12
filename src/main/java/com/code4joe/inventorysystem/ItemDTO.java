@@ -1,5 +1,9 @@
 package com.code4joe.inventorysystem;
 
+/**
+ * @author Matthew Puentes
+ */
+
 public class ItemDTO {
 
     private String name;

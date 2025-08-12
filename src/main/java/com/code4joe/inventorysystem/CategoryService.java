@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Matthew Puntes
+ */
+
 public class CategoryService {
 
     private String getAllSQL = "SELECT * FROM categories";
