@@ -10,11 +10,14 @@ public class ItemDTO {
 
     private Boolean sold;
 
-    public ItemDTO(String name, Double price, String date, Boolean sold) {
+    private int quantity;
+
+    public ItemDTO(String name, Double price, String date, Boolean sold, int quantity) {
         this.name = name;
         this.price = price;
         this.date = date;
         this.sold = sold;
+        this.quantity = quantity;
     }
 
     public ItemDTO(String name, Double price, Boolean sold) {
@@ -53,5 +56,13 @@ public class ItemDTO {
 
     public void setSold(Boolean sold) {
         this.sold = sold;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

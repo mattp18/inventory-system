@@ -16,7 +16,7 @@ public class ItemService {
             "FROM items i\n" +
             "LEFT JOIN categories c ON i.category_id = c.id;\n";
 
-    private String updateItemSQL = "UPDATE items SET name = ?, sold = ?, price = ?, date = ?, category_id = ? WHERE id = ?";
+    private String updateItemSQL = "UPDATE items SET name = ?, sold = ?, price = ?, date = ?, quantity = ?, category_id = ? WHERE id = ?";
 
     private String removeItemSQL = "DELETE FROM items WHERE id = ?";
 
@@ -89,8 +89,9 @@ public class ItemService {
             statement.setBoolean(2, itemDTO.getSold());
             statement.setDouble(3, itemDTO.getPrice());
             statement.setString(4, itemDTO.getDate());
-            statement.setInt(5, categoryId);
-            statement.setInt(6, itemId);
+            statement.setInt(5, itemDTO.getQuantity());
+            statement.setInt(6, categoryId);
+            statement.setInt(7, itemId);
 
 
             boolean statementExecutedSuccessfully = statement.execute();

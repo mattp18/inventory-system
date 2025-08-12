@@ -47,6 +47,9 @@ public class ItemDetailsController {
     @FXML
     private ImageView iconDeleteItem;
 
+    @FXML
+    private Spinner<Integer> detailSpinner;
+
     public void setItemDataService(ItemDataService itemDataService) {
         this.itemDataService = itemDataService;
     }
@@ -65,6 +68,7 @@ public class ItemDetailsController {
         priceField.setText(String.format("%.2f", item.getPrice()));
         checkBox.setSelected(item.getSold());
         LocalDate localDate = LocalDate.parse(item.getDate());
+        detailSpinner.getValueFactory().setValue(item.getQuantity());
         datePicker.setValue(localDate);
 
         if(item.getCategory() != null) {
@@ -79,7 +83,7 @@ public class ItemDetailsController {
 
         if(!priceField.getText().trim().isEmpty() && !nameField.getText().trim().isEmpty()) {
             if (datePicker.getValue() != null) {
-                itemDTO = new ItemDTO(nameField.getText(), Double.parseDouble(priceField.getText()), datePicker.getValue().toString(), checkBox.isSelected());
+                itemDTO = new ItemDTO(nameField.getText(), Double.parseDouble(priceField.getText()), datePicker.getValue().toString(), checkBox.isSelected(), detailSpinner.getValue());
             } else {
                 itemDTO = new ItemDTO(nameField.getText(), Double.parseDouble(priceField.getText()), checkBox.isSelected());
             }
