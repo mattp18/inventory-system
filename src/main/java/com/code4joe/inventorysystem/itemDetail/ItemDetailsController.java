@@ -3,6 +3,7 @@ package com.code4joe.inventorysystem.itemDetail;
 import com.code4joe.inventorysystem.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -52,6 +53,8 @@ public class ItemDetailsController {
 
     public void initialize() {
         categoryComboBox.setItems(FXCollections.observableArrayList(categoryService.getAllCategories()));
+        iconDeleteItem.setCursor(Cursor.HAND);
+
     }
 
     public void setItem(Item item) {
@@ -71,17 +74,43 @@ public class ItemDetailsController {
 
     public void submitUpdateItem() {
         ItemDTO itemDTO = null;
-        if(datePicker.getValue() != null) {
-            itemDTO = new ItemDTO(nameField.getText(), Double.parseDouble(priceField.getText()), datePicker.getValue().toString(), checkBox.isSelected());
-        } else {
-            itemDTO = new ItemDTO(nameField.getText(), Double.parseDouble(priceField.getText()), checkBox.isSelected());
-        }
+
+        if (priceValidation(priceField)) return;
+
+        if(!priceField.getText().trim().isEmpty() && !nameField.getText().trim().isEmpty()) {
+            if (datePicker.getValue() != null) {
+                itemDTO = new ItemDTO(nameField.getText(), Double.parseDouble(priceField.getText()), datePicker.getValue().toString(), checkBox.isSelected());
+            } else {
+                itemDTO = new ItemDTO(nameField.getText(), Double.parseDouble(priceField.getText()), checkBox.isSelected());
+            }
             itemService.updateItem(itemId, categoryComboBox.getValue().getId(), itemDTO);
 
-        itemDataService.refreshItems();
+            itemDataService.refreshItems();
 
-        Stage stage = (Stage) submitButton.getScene().getWindow();
-        stage.close();
+            Stage stage = (Stage) submitButton.getScene().getWindow();
+            stage.close();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Missing values");
+            alert.setContentText("Name and Price are required");
+
+            alert.showAndWait();
+        }
+    }
+
+    public static boolean priceValidation(TextField priceField) {
+        if(!priceField.getText().matches("\\d*(\\.\\d*)?")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Input Validation Failed");
+            alert.setContentText("Please enter a valid number");
+
+            alert.showAndWait();
+
+            return true;
+        }
+        return false;
     }
 
     @FXML

@@ -23,6 +23,8 @@ public class DatabaseInitializer {
     CREATE TABLE IF NOT EXISTS categories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(255)
+        
+        
     )
 """);
 
@@ -40,6 +42,9 @@ public class DatabaseInitializer {
     )
 """);
 
+            // Populate default categories if none exist
+            populateDefaultCategories(connection);
+
             log.info("Successfully initialized DB");
 
 
@@ -50,5 +55,36 @@ public class DatabaseInitializer {
 
         }
 
+    }
+
+    private static void populateDefaultCategories(Connection connection) throws SQLException {
+        String checkSql = "SELECT COUNT(*) FROM categories";
+        try (Statement stmt = connection.createStatement();
+             var rs = stmt.executeQuery(checkSql)) {
+
+            if (rs.next() && rs.getInt(1) == 0) {
+                log.info("No categories found — inserting default categories...");
+                try (var ps = connection.prepareStatement(
+                        "INSERT INTO categories (name) VALUES (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?), (?)")) {
+                    ps.setString(1, "Electronics");
+                    ps.setString(2, "Collectibles & Art");
+                    ps.setString(3, "Home & Garden");
+                    ps.setString(4, "Clothing, Shoes, & Accessories");
+                    ps.setString(5, "Toys & Hobbies");
+                    ps.setString(6, "Sporting Goods");
+                    ps.setString(7, "Books, Movies & Music");
+                    ps.setString(8, "Health & Beauty");
+                    ps.setString(9, "Business & Industrial");
+                    ps.setString(10, "Jewelry & Watches");
+                    ps.setString(11, "Baby Essentials");
+                    ps.setString(12, "Pet Supplies");
+                    ps.setString(13, "Tickets & Travel");
+                    ps.setString(14, "Other");
+                    ps.executeUpdate();
+                }
+            } else {
+                log.info("Categories already populated, skipping...");
+            }
+        }
     }
 }

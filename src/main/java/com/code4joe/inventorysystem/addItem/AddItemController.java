@@ -4,6 +4,7 @@ import com.code4joe.inventorysystem.Category;
 import com.code4joe.inventorysystem.CategoryService;
 import com.code4joe.inventorysystem.Item;
 import com.code4joe.inventorysystem.ItemService;
+import com.code4joe.inventorysystem.itemDetail.ItemDetailsController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -44,16 +45,7 @@ public class AddItemController {
         System.out.println("addItemHandleSubmit testing");
         //retrieve category object by name
 
-        if(!itemPriceField.getText().matches("\\d*(\\.\\d*)?")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Input Validation Failed");
-            alert.setContentText("Please enter a valid number");
-
-            alert.showAndWait();
-
-            return;
-        }
+        if (ItemDetailsController.priceValidation(itemPriceField)) return;
 
         if(!itemNameField.getText().trim().isEmpty() && !itemPriceField.getText().trim().isEmpty() && !categoryComboBox.getSelectionModel().isEmpty()) {
             Item item = new Item(itemNameField.getText().trim(), Double.parseDouble(itemPriceField.getText().trim()), categoryComboBox.getValue());
