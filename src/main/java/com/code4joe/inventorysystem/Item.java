@@ -15,6 +15,8 @@ public class Item {
 
     private Boolean sold;
 
+    private int quantity;
+
     private Category category;
 
     public Item(String name, Double price, Category category) {
@@ -23,12 +25,13 @@ public class Item {
         this.category = category;
     }
 
-    public Item(int id, String name, String date, Boolean sold, Double price, Category category) {
+    public Item(int id, String name, String date, Boolean sold, Double price, int quantity, Category category) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.date = date;
         this.sold = sold;
+        this.quantity = quantity;
         this.id = id;
     }
 
@@ -50,6 +53,14 @@ public class Item {
         this.sold = sold;
         this.id = id;
         this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public int getId() {

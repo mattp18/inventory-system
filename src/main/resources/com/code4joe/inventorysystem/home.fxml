@@ -53,6 +53,7 @@
        <TableColumn fx:id="priceColumn" prefWidth="75.0" text="Price" />
          <TableColumn fx:id="soldColumn" prefWidth="75.0" text="Sold" />
          <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Date" />
+         <TableColumn fx:id="quantityColumn" prefWidth="75.0" text="Quantity" />
          <TableColumn fx:id="categoryColumn" prefWidth="75.0" text="Category" />
      </columns>
       <columnResizePolicy>

@@ -10,9 +10,9 @@ import java.util.List;
 
 public class ItemService {
 
-    private String sql = "INSERT INTO items (name, date, sold, price, category_id) VALUES (?, ?, ?, ?, ?)";
+    private String sql = "INSERT INTO items (name, date, sold, price, quantity, category_id) VALUES (?, ?, ?, ?, ?, ?)";
 
-    private String eagerFetchItemsSQL = "SELECT i.id, i.name, i.date, i.sold, i.price, c.id AS category_id, c.name AS category_name\n" +
+    private String eagerFetchItemsSQL = "SELECT i.id, i.name, i.date, i.sold, i.price, i.quantity, c.id AS category_id, c.name AS category_name\n" +
             "FROM items i\n" +
             "LEFT JOIN categories c ON i.category_id = c.id;\n";
 
@@ -33,7 +33,8 @@ public class ItemService {
             statement.setString(2, LocalDate.now().toString());
             statement.setBoolean(3, item.getSold());
             statement.setDouble(4, item.getPrice());
-            statement.setInt(5, item.getCategory().getId());
+            statement.setInt(5, item.getQuantity());
+            statement.setInt(6, item.getCategory().getId());
 
             statement.executeUpdate();
 
@@ -65,6 +66,7 @@ public class ItemService {
                         rs.getString("date"),
                         rs.getBoolean("sold"),
                         rs.getDouble("price"),
+                        rs.getInt("quantity"),
                         category
                 );
 

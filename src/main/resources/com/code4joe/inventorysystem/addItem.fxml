@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -12,10 +13,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.code4joe.inventorysystem.addItem.AddItemController">
    <children>
-      <GridPane hgap="50.0" layoutX="128.0" layoutY="61.0" prefHeight="184.0" prefWidth="281.0">
+      <GridPane hgap="50.0" layoutX="137.0" layoutY="59.0" maxWidth="-Infinity" prefHeight="184.0" prefWidth="281.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -28,9 +30,11 @@
             <TextField fx:id="itemNameField" GridPane.rowIndex="1" />
             <Label text="Price" GridPane.columnIndex="1" />
             <TextField fx:id="itemPriceField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="Category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="categoryComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Category" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <ComboBox fx:id="categoryComboBox" minWidth="140.0" prefHeight="25.0" prefWidth="300.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <CheckBox fx:id="checkBox" mnemonicParsing="false" text="sold" GridPane.rowIndex="3" />
+            <Spinner fx:id="quantitySpinner" min="1" max="100" initialValue="1" editable="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label text="Quantity" GridPane.columnIndex="2" />
          </children>
       </GridPane>
       <Button fx:id="submitAddButton" layoutX="236.0" layoutY="255.0" mnemonicParsing="false" onAction="#addItemHandleSubmit" text="Add Item" />

@@ -37,6 +37,7 @@ public class DatabaseInitializer {
         price DOUBLE,
         category_id INTEGER,
         sold BOOLEAN DEFAULT FALSE,
+        quantity INTEGER DEFAULT 0,
         
         FOREIGN KEY (category_id) REFERENCES categories(id)
     )

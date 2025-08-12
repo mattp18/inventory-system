@@ -45,6 +45,9 @@ public class InventoryController {
     @FXML
     private TableColumn<Item, String> categoryColumn;
 
+    @FXML
+    private TableColumn<Item, Integer> quantityColumn;
+
     /**
      * All tab items
      */
@@ -84,6 +87,7 @@ public class InventoryController {
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         soldColumn.setCellValueFactory(new PropertyValueFactory<>("sold"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceColumn.setCellFactory(tc -> new TableCell<Item, Double>() {
             @Override
             protected void updateItem(Double price, boolean empty) {

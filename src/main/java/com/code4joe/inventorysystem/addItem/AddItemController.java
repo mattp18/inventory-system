@@ -31,6 +31,9 @@ public class AddItemController {
     @FXML
     private CheckBox checkBox;
 
+    @FXML
+    private Spinner<Integer> quantitySpinner;
+
     public void initialize() {
         categoryComboBox.setItems(FXCollections.observableArrayList(categoryService.getAllCategories()));
 
@@ -50,6 +53,7 @@ public class AddItemController {
         if(!itemNameField.getText().trim().isEmpty() && !itemPriceField.getText().trim().isEmpty() && !categoryComboBox.getSelectionModel().isEmpty()) {
             Item item = new Item(itemNameField.getText().trim(), Double.parseDouble(itemPriceField.getText().trim()), categoryComboBox.getValue());
             item.setSold(checkBox.isSelected());
+            item.setQuantity(quantitySpinner.getValue());
             itemService.addItem(item);
             System.out.println("persisting item to db...");
 
