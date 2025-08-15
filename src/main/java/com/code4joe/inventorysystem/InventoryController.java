@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author Matthew Puentes
@@ -211,8 +212,20 @@ public class InventoryController {
 
     private void showItemDetailsWindow(Item item) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemDetails.fxml"));
+            URL fxmlUrl = getClass().getResource("/com/code4joe/inventorysystem/itemDetails.fxml");
+            if (fxmlUrl == null) {
+                fxmlUrl = getClass().getClassLoader().getResource("com/code4joe/inventorysystem/itemDetails.fxml");
+            }
+
+            if (fxmlUrl == null) {
+                System.err.println("FXML resource not found!");
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
             Parent root = loader.load();
+
+
 
             // Pass the selected item to the controller
             ItemDetailsController detailsController = loader.getController();
